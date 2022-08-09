@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bezier Tool</title>
+    <script src="scripts/bezier.js" defer=""></script>
+    <script src="scripts/interface.js" defer=""></script>
+    <script src="scripts/main2.js" defer=""></script>
+    <script src="scripts/appInterface.js" defer=""></script>
+    <script src="scripts/tail.select.js" defer=""></script>
+    <!--script src="scripts/script.js" defer=""></script-->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/tail.select-light-feather.css">
+</head>
+<body>
+
+<div class="container-center">
+    <div class="container">
+        <div class="header">
+            <button id="scriptRun">Run</button>
+            <div id="user-header"></div>
+        </div>
+
+        <div class="first-area">
+            <h2 curve-edit="0" id="canvas-curve-name"></h2>
+
+            <div class="flex h3 centerY space canvas-gui">
+                <select class="select curve-select" id="select-ease">
+                    <optgroup label="Ease">
+                        <option value="linear">linear</option>
+                        <option value="easeIn">easeIn</option>
+                        <option value="easeOut">easeOut</option>
+                        <option value="easeInOut">easeInOut</option>
+                        <option value="easeOutIn">easeOutIn</option>
+                    </optgroup>
+                    <optgroup label="Attention Seekers">
+                        <option value="bounce">bounce</option>
+                        <option value="1">flash</option>
+                        <option value="2">pulse</option>
+                        <option value="3">rubberBand</option>
+                        <option value="4">shake</option>
+                        <option value="5">swing</option>
+                        <option value="6">wobble</option>
+                        <option value="7">jello</option>
+                        <option value="8">heartbeat</option>
+                    </optgroup>
+                    <optgroup label="Bouncing">
+                        <option value="0">bounceIn</option>
+                        <option value="1">bounceInDown</option>
+                        <option value="2">bounceInLeft</option>
+                        <option value="3">bounceInRight</option>
+                        <option value="4">bounceInUp</option>
+                        <option value="5">bounceOut</option>
+                        <option value="6">bounceOutDown</option>
+                        <option value="7">bounceOutLeft</option>
+                        <option value="8">bounceOutRight</option>
+                        <option value="9">bounceOutUp</option>
+                    </optgroup>
+                    <optgroup label="Fading">
+                        <option value="0">fadeIn</option>
+                        <option value="1">fadeOut</option>
+                    </optgroup>
+                    <optgroup label="Flippers">
+                        <option value="0">flipInX</option>
+                        <option value="1">flipInY</option>
+                        <option value="2">flipOutX</option>
+                        <option value="3">flipOutY</option>
+                    </optgroup>
+                    <optgroup label="Rotating">
+                        <option value="0">rotateIn</option>
+                        <option value="1">rotateOut</option>
+                    </optgroup>
+                    <optgroup label="Sliding">
+                        <option value="0">slideInDown</option>
+                        <option value="slideInLeft">slideInLeft</option>
+                        <option value="2">slideInRight</option>
+                        <option value="3">slideInUp</option>
+                        <option value="4">slideOutDown</option>
+                        <option value="5">slideOutLeft</option>
+                        <option value="6">slideOutRight</option>
+                        <option value="7">slideOutUp</option>
+                    </optgroup>
+                    <optgroup label="Zoom">
+                        <option value="0">zoomIn</option>
+                        <option value="1">zoomOut</option>
+                    </optgroup>
+                </select>
+            <div id="canvas-tools" class="flex h3">
+            <div class="tool" id="create-new">
+                <div class="tool-icon">
+                    <img src="static/new.svg">
+                </div>
+                <div class="tool-text" style="width: 0">New</div>
+            </div>
+                <div class="tool" id="save">
+                    <div class="tool-icon">
+                        <img src="static/save.svg">
+                    </div>
+                    <div class="tool-text" style="width: 0">Save</div>
+                </div>
+                <div class="tool" id="compare">
+                    <div class="tool-icon">
+                        <img src="static/compare.svg">
+                    </div>
+                    <div class="tool-text" style="width: 0">Compare</div>
+                </div>
+            </div>
+
+            </div>
+
+            <div class="curve">
+                <canvas id="graph-canvas" height="426px" width="380px"></canvas>
+            </div>
+            <div class="flex centerY" id="curves-tabs"></div>
+        </div>
+
+        <div class="second-area">
+            <div id="tab-content">
+
+                <div data-favorite="0" class="content show">
+                    <h2>Preview</h2>
+                    <div class="title">
+                        <div class="flex h3 duration">Duration:
+                            <div class="range"><input type="range" id="duration" min="0" max="5" step="0.1"></div>
+                            <div id="duration-time">500ms</div>
+                        </div>
+                        <div id="preview-tools" class="flex h3">
+                            <div class="tool" id="run">
+                                <div class="tool-icon"><img src="static/play.svg"></div>
+                                <div class="tool-text" style="width: 0">Run</div>
+                            </div>
+                            <div class="tool" id="clear">
+                                <div class="tool-icon"><img src="static/delete.svg"></div>
+                                <div class="tool-text" style="width: 0">Clear</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-block">
+                        <div id="preview">
+                            <div></div>
+                        </div>
+                    </div>
+                    <div class="tip-text">
+                        <p>
+                            <b>Tip:</b> Click on <span><img height="12" width="12" src="static/new.svg"></span> to create a new easy-function. Click on <span><img height="12" width="12" src="static/compare.svg"></span> to compare it with the current other function.
+                            If you like your easy-function click on <span><img height="12" width="12" src="static/save.svg"></span> to save it. Click on the compared function to edit it.
+                        </p>
+                    </div>
+                </div>
+
+                <div data-favorite="1" class="content">
+                    <h2>Code</h2>
+                    <div class="title">
+                        <div class="flex h3 centerY">
+                            <select class="select" id="select-style">
+                                <optgroup label="General">
+                                    <option value="width">Width</option>
+                                    <option value="height">Height</option>
+                                    <option value="opacity">Opacity</option>
+                                </optgroup>
+                                <optgroup label="Absolute Position">
+                                    <option value="left">Left</option>
+                                    <option value="top">Top</option>
+                                </optgroup>
+                                <optgroup label="Transform">
+                                    <option value="translate3d(%,0,0)">TranslateX</option>
+                                    <option value="translate3d(0,%,0)">TranslateY</option>
+                                    <option value="scale3d(%,%,%)">Scale</option>
+                                    <option value="rotateX(%)">RotateX</option>
+                                    <option value="rotateY(%)">RotateY</option>
+                                    <option value="skewX(%)">SkewX</option>
+                                    <option value="skewY(%)">SkewY</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div id="code-tools" class="flex h3">
+                            <div class="tool" id="refresh">
+                                <div class="tool-icon">
+                                    <img src="static/refresh.svg">
+                                </div>
+                                <div class="tool-text" style="width: 0">Refresh</div>
+                            </div>
+                            <div class="tool" id="copy">
+                                <div class="tool-icon">
+                                    <img src="static/copy.svg" alt="z">
+                                </div>
+                                <div class="tool-text" style="width: 0">Copy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scrol-block content-block">
+                    <div id="code-box">
+                        <div class="code-line-numbers"></div>
+                        <textarea readonly class="code-text"></textarea>
+                    </div>
+                    </div>
+                    <div class="tip-text tps">
+                        <p>
+                            <b>Tip:</b> Click on <span><img height="12" width="12" src="static/refresh.svg"></span> to refresh CSS code of your animation. Click on <span><img height="12" width="12" src="static/copy.svg"></span> to copy code to buffer. Click on the tabs to switch betwen easy-functions.
+                        </p>
+                    </div>
+                </div>
+
+                <div data-favorite="2" class="content">
+                    <h2>Archive</h2>
+                    <div class="title">
+                        <div class="flex h3"></div>
+                        <div id="archive-tools" class="flex h3">
+                            <div class="tool" id="refresh-archive">
+                                <div class="tool-icon"><img src="static/refresh.svg"></div>
+                                <div class="tool-text" style="width: 0">Refresh</div>
+                            </div>
+                            <div class="tool" id="b2">
+                                <div class="tool-icon"><img src="static/export.svg"></div>
+                                <div class="tool-text" style="width: 0">Export</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scrol-block content-block">
+                        <div id="archive-box">
+                        </div>
+                    </div>
+                    <div class="tip-text tps">
+                        <p>
+                            <b>Tip:</b> Click on <span><img height="12" width="12" src="static/refresh.svg"></span> to refresh archive functions. Click on <span><img height="12" width="12" src="static/export.svg"></span> to export all saved functions to text file. Click on easy-function to compare it with the current other function.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="tabs">
+                <div data-favorite="0" class="vertical-tab cursor-pointer active">
+                    <div class="tab-icon">
+                        <svg height="30" width="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><polygon style="fill:#415E72;" points="0,421.544 148.072,249.736 296.136,421.544 "/><polygon style="fill:#25B6D2;" points="111.08,421.544 311.544,188.968 512,421.544 "/><circle style="fill:#ecbd26;" cx="204.824" cy="139.712" r="49.256"/></svg>
+                    </div>
+                    <div class="tab-text"><span>P</span>review</div>
+                </div>
+                <div data-favorite="1" class="vertical-tab cursor-pointer">
+                    <div class="tab-icon">
+                        <svg height="30" width="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path style="fill:#25B6D2;" d="M0,260.908l174.648-81.136v38.568l-132.08,57.848v0.728l132.08,57.848v38.568L0,292.212V260.908z"/><path style="fill:#415E72;" d="M201.6,387.9l77.864-263.8h36.752L238.4,387.9H201.6z"/><path style="fill:#E04F5F;" d="M512,293.284L337.352,373.34v-38.568l134.992-57.848v-0.728L337.352,218.34v-38.568L512,259.828 V293.284z"/></svg>
+                    </div>
+                    <div class="tab-text"><span>C</span>ode</div>
+                </div>
+
+                <div data-favorite="2" class="vertical-tab cursor-pointer">
+                    <div class="tab-icon">
+                        <svg height="30" width="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 491.493 491.493"><rect y="31.511" style="fill:var(--color-0)" width="124.058" height="419.727"/><rect x="22.036" y="67.618" style="fill:#FFFFFF;" width="80.005" height="128.922"/><rect x="142.464" y="31.511" style="fill:var(--color-1);" width="124.058" height="419.727"/><rect x="164.506" y="67.618" style="fill:#FFFFFF;" width="80.005" height="128.922"/><rect x="315.597" y="31.635" transform="matrix(-0.9693 0.2458 -0.2458 -0.9693 803.0308 382.7534)" style="fill: var(--color-4);" width="124.057" height="419.726"/><rect x="310.782" y="71.104" transform="matrix(-0.9693 0.2458 -0.2458 -0.9693 724.1257 180.7425)" style="fill:#FFFFFF;" width="80" height="128.922"/></svg>
+                    </div>
+                    <div class="tab-text"><span>A</span>rchive</div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="third-area">
+            <div class="flex centerY centerX">
+                <div id="animationSandbox" class="animation time"><h2>Hello, World!</h2></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
